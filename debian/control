@@ -1,0 +1,19 @@
+Source: libdisplaycore-driver-sdl
+Section: libraries
+Priority: extra
+Maintainer: Matt Jenkins <matt@majenko.co.uk>
+Build-Depends: debhelper (>= 8.0.0)
+Standards-Version: 3.9.4
+
+Package: libdisplaycore-driver-sdl
+Section: libraries
+Architecture: all
+XBSC-Group: DisplayCore
+XBSC-Subgroup: Drivers
+Depends: libdisplaycore-core
+Provides: SDL.h
+Description: SDL driver for DisplayCore
+ Create rich Linux GUI applications.
+
+
+
