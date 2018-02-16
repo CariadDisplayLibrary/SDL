@@ -99,7 +99,7 @@ int SDL::getHeight() {
     return _height;
 }
 
-boolean SDLTouch::isPressed() {
+bool SDLTouch::isPressed() {
     return _pressed;
 }
 

@@ -40,7 +40,7 @@ class SDL;
 class SDLTouch : public Touch {
     public:
         SDLTouch(int w, int h) : Touch(w, h) {}
-        boolean isPressed();
+        bool isPressed();
 
         int x();
         int y();
@@ -55,7 +55,7 @@ class SDLTouch : public Touch {
     private:
         int _x;
         int _y;
-        boolean _pressed;
+        bool _pressed;
 
         void press(int x, int y) { _pressed = true; _x = x; _y = y; }
         void release() { _pressed = false; }
@@ -84,7 +84,7 @@ class SDL : public DisplayCore {
         void setRotation(int r) { }
         void displayOn() { }
         void displayOff() { }
-        void invertDisplay(boolean b) { }
+        void invertDisplay(bool b) { }
 
         void fillScreen(color_t c);
         void fillRectangle(int x, int y, int w, int h, color_t color);
