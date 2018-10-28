@@ -12,7 +12,7 @@ XBSC-Group: DisplayCore
 XBSC-Subgroup: Drivers
 Depends: libdisplaycore-core
 Provides: SDL.h
-Description: SDL driver for DisplayCore
+Description: SDL
  Create rich Linux GUI applications.
 
 
