@@ -33,7 +33,7 @@
 
 #include <DisplayCore.h>
 
-#include <SDL/SDL.h>
+#include <SDL2/SDL.h>
 
 class SDL;
 
@@ -74,8 +74,8 @@ class SDL : public DisplayCore {
         static const uint8_t DoubleBuffered = 0x02;
         static const uint8_t Doublebuffered = 0x02;
 
-        SDL(int w, int h, uint8_t t) : DisplayCore(), _width(w), _height(h), _type(t) {}
-        SDL(uint8_t t) : DisplayCore(), _width(0), _height(0), _type(t) {}
+        SDL(int w, int h, uint8_t t, const char *title = "DisplayCore") : DisplayCore(), _width(w), _height(h), _type(t), _title(title) {}
+        SDL(uint8_t t, const char *title = "DisplayCore") : DisplayCore(), _width(0), _height(0), _type(t), _title(title) {}
 
         void initializeDevice();
         void setPixel(int x, int y, color_t c);
@@ -106,12 +106,18 @@ class SDL : public DisplayCore {
         void windowData(color_t *d, int l);
         void closeWindow();
 
+        void setWindowOpacity(float o);
+        void setWindowTitle(const char *t);
+
 
     private:
         int _width;
         int _height;
         int _type;
+        const char *_title;
 
+        SDL_Window *_window;
+        SDL_Surface *_backing;
         SDL_Surface *_display;
 
         int _buffered;

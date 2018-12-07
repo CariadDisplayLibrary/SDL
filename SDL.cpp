@@ -3,38 +3,64 @@
 void SDL::initializeDevice() {
     SDL_Init(SDL_INIT_EVERYTHING);
 
-    int config = SDL_HWSURFACE;
+    int config = SDL_WINDOW_SHOWN;
     
     if (_type & Fullscreen) {
-        config |= SDL_FULLSCREEN;
+        config |= SDL_WINDOW_FULLSCREEN;
     }
 
     if (_type & Doublebuffer) {
-        config |= SDL_DOUBLEBUF;
+//        config |= SDL_DOUBLEBUF;
     }
 
-	const SDL_VideoInfo* info = SDL_GetVideoInfo();
-	if (_width == 0) {
-		_width = info->current_w;
-	}
-	if (_height == 0) {
-		_height = info->current_h;
-	}
+    SDL_DisplayMode mode;
+
+    if ((_width == 0) || (_height == 0)) {
+        if (SDL_GetDesktopDisplayMode(0, &mode) != 0) {
+            if (_width == 0) {
+                _width = mode.w;
+            }
+            if (_height == 0) {
+                _height = mode.h;
+            }
+        }
+    }
+
+    _window = SDL_CreateWindow(_title,
+        SDL_WINDOWPOS_UNDEFINED,
+        SDL_WINDOWPOS_UNDEFINED,
+        _width,
+        _height,
+        config
+    );
+
+    if (!_window) {
+        printf("Unable to create window: %s\n", SDL_GetError());
+        SDL_Quit();
+        exit(10);
+    }
+
+    _backing = SDL_GetWindowSurface(_window);
+    if (!_backing) {
+        printf("Unable to get backing surface: %s\n", SDL_GetError());
+        SDL_Quit();
+        exit(10);
+    }
+
+    _display = SDL_CreateRGBSurfaceWithFormat(0, _width, _height, 16, SDL_PIXELFORMAT_RGB565);
+    if (!_display) {
+        printf("Unable to create framebuffer surface: %s\n", SDL_GetError());
+        SDL_Quit();
+        exit(10);
+    }
     
-    _display = SDL_SetVideoMode(_width, _height, 16, config);
 	atexit(SDL_Quit);
-	_min_x = _width;
-	_min_y = _height;
-	_max_x = 0;
-	_max_y = 0;
 }
 
 void SDL::setPixel(int x, int y, color_t c) {
     if (x < 0 || y < 0 || x >= _width || y >= _height) {
         return;
     }
-
-	setBound(x, y);
 
     if (SDL_MUSTLOCK(_display)) 
         if (SDL_LockSurface(_display) < 0) 
@@ -48,7 +74,8 @@ void SDL::setPixel(int x, int y, color_t c) {
         SDL_UnlockSurface(_display);
 
     if (!_buffered) {
-        SDL_UpdateRect(_display, x, y, 1, 1);
+        SDL_BlitSurface(_display, NULL, _backing, NULL);
+        SDL_UpdateWindowSurface(_window);
     }
 }
 
@@ -59,14 +86,8 @@ void SDL::startBuffer() {
 void SDL::endBuffer() {
     _buffered--;
     if (_buffered <= 0) {
-	if (_min_x <= _max_x && _min_y <= _max_y) {
-		SDL_UpdateRect(_display, _min_x, _min_y, _max_x - _min_x + 1, _max_y - _min_y + 1);
-	}
-	_min_x = _width;
-	_min_y = _height;
-	_max_x = 0;
-	_max_y = 0;
-	
+        SDL_BlitSurface(_display, NULL, _backing, NULL);
+        SDL_UpdateWindowSurface(_window);
         _buffered = 0;
     }
 }
@@ -150,23 +171,13 @@ void SDL::fillRectangle(int x, int y, int w, int h, color_t color) {
     r.w = w;
     r.h = h;
 
-	setBound(x, y);
-	setBound(x + w, y + h);
-
     SDL_FillRect(_display, &r, color);
 }
 
 void SDL::flip() {
-	SDL_Flip(_display);
+    SDL_BlitSurface(_display, NULL, _backing, NULL);
+    SDL_UpdateWindowSurface(_window);
 }
-
-void SDL::setBound(int x, int y) {
-	if (x < _min_x) _min_x = x;
-	if (x > _max_x) _max_x = x;
-	if (y < _min_y) _min_y = y;
-	if (y > _max_y) _max_y = y;
-}
-
 
 void SDL::hideCursor() {
 	SDL_ShowCursor(0);
@@ -215,4 +226,13 @@ void SDL::closeWindow() {
     SDL_Rect r = {(int16_t)_winx, (int16_t)_winy, (uint16_t)_winw, (uint16_t)_winh };
     SDL_BlitSurface(_blitSfc, NULL, _display, &r);
     SDL_FreeSurface(_blitSfc);
+}
+
+void SDL::setWindowOpacity(float o) {
+    SDL_SetWindowOpacity(_window, o);
+}
+
+void SDL::setWindowTitle(const char *t) {
+    SDL_SetWindowTitle(_window, t);
+    _title = t;
 }

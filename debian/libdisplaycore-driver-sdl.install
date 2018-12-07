@@ -1,2 +1,3 @@
-SDL.cpp libraries/BoardSupport/SDL
-SDL.h libraries/BoardSupport/SDL
+SDL.cpp libraries/DisplayCore/SDL
+SDL.h libraries/DisplayCore/SDL
+examples libraries/DisplayCore/SDL
