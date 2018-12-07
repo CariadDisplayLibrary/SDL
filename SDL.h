@@ -73,6 +73,9 @@ class SDL : public DisplayCore {
         static const uint8_t Doublebuffer = 0x02;
         static const uint8_t DoubleBuffered = 0x02;
         static const uint8_t Doublebuffered = 0x02;
+        static const uint8_t Borderless = 0x04;
+        static const uint8_t Ontop = 0x08;
+        static const uint8_t OnTop = 0x08;
 
         SDL(int w, int h, uint8_t t, const char *title = "DisplayCore") : DisplayCore(), _width(w), _height(h), _type(t), _title(title) {}
         SDL(uint8_t t, const char *title = "DisplayCore") : DisplayCore(), _width(0), _height(0), _type(t), _title(title) {}
@@ -108,7 +111,6 @@ class SDL : public DisplayCore {
 
         void setWindowOpacity(float o);
         void setWindowTitle(const char *t);
-
 
     private:
         int _width;

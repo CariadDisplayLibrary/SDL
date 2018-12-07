@@ -9,6 +9,14 @@ void SDL::initializeDevice() {
         config |= SDL_WINDOW_FULLSCREEN;
     }
 
+    if (_type & Borderless) {
+        config |= SDL_WINDOW_BORDERLESS | SDL_WINDOW_UTILITY;
+    }
+
+    if (_type & Ontop) {
+        config |= SDL_WINDOW_ALWAYS_ON_TOP;
+    }
+
     if (_type & Doublebuffer) {
 //        config |= SDL_DOUBLEBUF;
     }
