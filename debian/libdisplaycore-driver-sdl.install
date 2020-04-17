@@ -1,3 +1,4 @@
-SDL.cpp libraries/DisplayCore/SDL
-SDL.h libraries/DisplayCore/SDL
 examples libraries/DisplayCore/SDL
+library.json libraries/DisplayCore/SDL
+library.properties libraries/DisplayCore/SDL
+src libraries/DisplayCore/SDL
