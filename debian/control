@@ -1,16 +1,17 @@
-Source: libdisplaycore-driver-sdl
+Source: libcariad-driver-sdl
 Section: main
 Priority: extra
 Maintainer: Matt Jenkins <matt@majenko.co.uk>
 Build-Depends: debhelper (>= 8.0.0)
 Standards-Version: 3.9.4
 
-Package: libdisplaycore-driver-sdl
+Package: libcariad-driver-sdl
+Replaces: libdisplaycore-driver-sdl
 Architecture: all
-XBSC-Group: DisplayCore
+XBSC-Group: Cariad
 XBSC-Subgroup: Drivers
 XBSC-Subsubgroup: Virtual
-Depends: libdisplaycore-core
+Depends: libcariad-core
 Provides: SDL.h
 Description: SDL
  Create rich Linux GUI applications.

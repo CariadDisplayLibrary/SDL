@@ -31,7 +31,7 @@
 #ifndef _NATIVEFB_H
 #define _NATIVEFB_H
 
-#include <DisplayCore.h>
+#include <Cariad.h>
 
 #include <SDL2/SDL.h>
 
@@ -63,7 +63,7 @@ class SDLTouch : public Touch {
         
 };
 
-class SDL : public DisplayCore {
+class SDL : public Cariad {
 
     public:
         static const uint8_t Windowed = 0;
@@ -77,8 +77,8 @@ class SDL : public DisplayCore {
         static const uint8_t Ontop = 0x08;
         static const uint8_t OnTop = 0x08;
 
-        SDL(int w, int h, uint8_t t, const char *title = "DisplayCore") : DisplayCore(), _width(w), _height(h), _type(t), _title(title) {}
-        SDL(uint8_t t, const char *title = "DisplayCore") : DisplayCore(), _width(0), _height(0), _type(t), _title(title) {}
+        SDL(int w, int h, uint8_t t, const char *title = "Cariad") : Cariad(), _width(w), _height(h), _type(t), _title(title) {}
+        SDL(uint8_t t, const char *title = "Cariad") : Cariad(), _width(0), _height(0), _type(t), _title(title) {}
 
         void initializeDevice();
         void setPixel(int x, int y, color_t c);
